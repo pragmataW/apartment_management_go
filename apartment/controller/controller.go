@@ -433,7 +433,7 @@ func (ctrl *controller) GetPaymentToken(c *fiber.Ctx) error {
 
 	merchantOid := randomkeygen.NewKeygen(64).GenerateRandomKey()
 	fmt.Println(merchantOid)
-	email := body.Email
+	email := c.Locals("email").(string)
 	paymentAmount := strconv.Itoa(int(dto.DuesPrice * 100))
 	userName := body.UserName
 	userAddress := body.UserAddress

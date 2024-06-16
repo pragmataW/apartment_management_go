@@ -929,7 +929,6 @@ func TestGetPaymentToken(t *testing.T) {
 		{"item2", 2},
 	}
 	mockRequest := dto.PaymentGetReq{
-		Email:       "test@example.com",
 		UserName:    "Test User",
 		UserAddress: "Test Address",
 		UserPhone:   "123456789",

@@ -22,7 +22,6 @@ type PaymentSendReq struct {
 }
 
 type PaymentGetReq struct {
-	Email       string          `json:"email" validate:"required,email"`
 	UserName    string          `json:"user_name" validate:"required"`
 	UserAddress string          `json:"user_address" validate:"required"`
 	UserPhone   string          `json:"user_phone" validate:"required"`
