@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  mail-service:
+    build:
+      context: ../mail
+      dockerfile: Dockerfile
+    ports:
+      - "2001:2001"
+    env_file:
+      - .env
+    networks:
+      - flat_network
+
+  flat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "2009:2009"
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - flat_network
+
+  postgres:
+    image: postgres:latest
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      retries: 5
+      timeout: 5s
+    volumes:
+      - ~/flat/postgres:/var/lib/postgresql/data
+      - ./tools/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - flat_network
+
+networks:
+  flat_network:
+    driver: bridge
