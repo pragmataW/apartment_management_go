@@ -445,7 +445,7 @@ func (ctrl *controller) GetPaymentToken(c *fiber.Ctx) error {
 	userBasketJSON, _ := json.Marshal(userBasket)
 	userBasketEncoded := base64.StdEncoding.EncodeToString(userBasketJSON)
 
-	userIP := "188.3.222.61"
+	userIP := c.IP()
 	timeOutLimit := "30"
 	debugOn := body.DebugOn
 	testMode := body.TestMode
@@ -516,12 +516,12 @@ func (ctrl *controller) PaymentCallback(c *fiber.Ctx) error {
 
 	if status == "success" {
 		err := ctrl.Service.PaymentCallback(merchantOid)
-		if err != nil{
+		if err != nil {
 			fmt.Println("service error")
 			return c.SendString(err.Error())
 		}
 		fmt.Println("payment done")
-	}else {
+	} else {
 		fmt.Println("payment is not done")
 		return c.SendString(status)
 	}
